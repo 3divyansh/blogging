@@ -6,10 +6,10 @@ const contact = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "name",
-      title: "Name",
-      type: "string",
-      validation: (Rule) => Rule.required().error("Name is required"),
+      name: "message",
+      title: "Message",
+      type: "text",
+      validation: (Rule) => Rule.required().error("Message is required"),
     }),
     defineField({
       name: "email",
@@ -21,10 +21,10 @@ const contact = defineType({
           .error("Email is required"),
     }),
     defineField({
-      name: "message",
-      title: "Message",
-      type: "text",
-      validation: (Rule) => Rule.required().error("Message is required"),
+      name: "phone",
+      title: "Phone",
+      type: "string",
+      validation: (Rule) => Rule.required().error("phone is required"),
     }),
   ],
 });

@@ -54,12 +54,7 @@ const blog: SchemaTypeDefinition = {
       type: 'image',
       validation: Rule => Rule.required()
     },
-    {
-      name: 'keyphrase',
-      title: 'Keyphrase',
-      type: 'string',
-      validation: Rule => Rule.required()
-    },
+   
     {
       name: 'content',
       title: 'content',

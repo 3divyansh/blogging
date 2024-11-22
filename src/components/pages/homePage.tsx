@@ -1,26 +1,22 @@
 // pages/index.tsx
 import Image from 'next/image'
 import { getBlogs } from "@/lib/sanity/utils"
+import { Any } from 'next-sanity';
 
-
-
-
-export default async function  homePage() {
-
-  const blogs = await getBlogs()
+export default async function homePage() {
+  const blogs = await getBlogs();
 
   console.log(blogs);
+
   
-
-
- const blogData = new Array(12).fill({
-    title: 'Blog Post Title',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    images: {
-      url : '/path/to/your/image.jpg',
-       alt: "steinteppich thumbnail"
-     } // Replace with actual image path or URL
-  });
+  const blogData = blogs.map((blog: Any) => ({
+    title: blog.title || 'Blog Post Title',
+    description: blog.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    image: {
+      url: blog.thumbnail || '/path/to/default/image.jpg', 
+       
+    }
+  }));
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
@@ -40,11 +36,9 @@ export default async function  homePage() {
             >
               {/* Image Section */}
               <div className="relative w-full h-2/3">
-                <Image
-                  src={blog.images}
-                  alt={blog.title}
-                  layout="fill"
-                  objectFit="cover"
+                <img
+                  src={blog.image.url}
+                  alt=''
                   className="transition-transform group-hover:scale-110"
                 />
               </div>

@@ -2,11 +2,11 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react";
 const Contact = () => {
-	const [isMounted, setIsMounted] = useState(false); // Check for client-side rendering
+	const [isMounted, setIsMounted] = useState(false); 
   const router = useRouter();
 
   useEffect(() => {
-    setIsMounted(true); // Only set true when the component is mounted on the client
+    setIsMounted(true); 
   }, []);
 
   const handleClose = () => {
@@ -16,40 +16,78 @@ const Contact = () => {
   };;
 
 
-  const [formData , setFormData] = useState({
+  const [formData, setFormData] = useState({
     message: "",
     email: "",
-    phone : "",
-
+    phone: "",
   });
 
-
-  const [error , setError] = useState({
+  const [error, setError] = useState({
     message: "",
     email: "",
-    phone : ""
+    phone: "",
+  });
 
-  })
-
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (e.target) {
-      const { name, value } = e.target; 
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-      setError(prevError => ({
-        ...prevError,
-        [name]: "", 
-      }));
+  const validateInput = (name: string, value: string): string => {
+    switch (name) {
+      case "message":
+        return value.trim() === "" ? "Message is required" : "";
+      case "email":
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return !emailRegex.test(value) ? "Enter a valid email address" : "";
+      case "phone":
+        const phoneRegex = /^[0-12]{10}$/;
+        return !phoneRegex.test(value) ? "Enter a valid 10-digit phone number" : "";
+      default:
+        return "";
     }
   };
- 
-  
-  
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    console.log(name);
+    
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    const errorMessage = validateInput(name, value);
+    setError((prev) => ({ ...prev, [name]: errorMessage }));
+  };
+
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newErrors = {
+      message: validateInput("message", formData.message),
+      email: validateInput("email", formData.email),
+      phone: validateInput("phone", formData.phone),
 
 
+
+
+     
+    
+    };
+
+    setError(newErrors);
+
+  
+    // if (Object.values(newErrors).some((error) => error !== "")) {
+    //   console.log("Form has validation errors:", newErrors);
+    //   return;
+    // }
+
+   
+    console.log("Form Submitted Successfully:", formData);
+    alert("Form submitted successfully!");
+
+
+
+    setFormData({ message: "", email: "", phone: "" });
+  };
+
+
+
+  
 
 
   return (
@@ -73,13 +111,16 @@ const Contact = () => {
             {/* Title */}
             <h2 className="text-2xl font-semibold text-center mb-6">Contact Us</h2>
             {/* Message Box */}
-            <form>
+            <form 
+            onSubmit={handleSubmit}
+            >
             <div className="mb-4">
               <label htmlFor="message" className="block text-gray-700 font-medium mb-2">
                 Your Message
               </label>
               <textarea
                 id="message"
+                name="message"
                 rows={4}
                 className={`w-full border rounded-lg p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 
                    ${
@@ -99,6 +140,7 @@ const Contact = () => {
               </label>
               <input
                 type="email"
+                name="email"
                 id="email"
                 className={`w-full border rounded-lg p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500
                    ${
@@ -118,6 +160,7 @@ const Contact = () => {
               </label>
               <input
                 type="tel"
+                name="phone"
                 id="phone"
                 className={`w-full border rounded-lg p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500
                    ${
@@ -132,8 +175,9 @@ const Contact = () => {
 
             {/* Submit Button */}
             <button
+           type="submit"
               className="bg-blue-500 text-white w-full py-2 rounded-lg hover:bg-blue-600 transition "
-              onClick={() => alert("Message Sent!")}
+             
             >
               Send Message
             </button>

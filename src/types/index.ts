@@ -102,4 +102,5 @@ export type Location = {
     }
     slug: string;
     description: string;
+    thumbnail: string;
 }

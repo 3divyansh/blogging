@@ -15,6 +15,7 @@ export async function getBlogs(): Promise<Blog[]> {
       _createdAt,
       _updatedAt,
       title,
+      images,
       "slug": slug.current,
       description,
       "thumbnail": thumbnail.asset->url
