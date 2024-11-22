@@ -40,6 +40,7 @@ export type Service = {
     image: string;
     keywords: string[];
     title: string;
+    email : string;
     section1?: {
         title?: string;
         paragraph?: string;
